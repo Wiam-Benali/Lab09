@@ -93,17 +93,26 @@ class Model:
 
 
     def soluzione_valida(self, tour,durata_corrente,costo_corrente,attrazioni_usate,max_giorni,max_budget):
-        if durata_corrente + tour.durata_giorni > max_giorni:
-            return False
-        if costo_corrente + float(tour.costo) > max_budget:
-            return False
+        valida = True
+        if max_budget == None:
+            valida = True
+        else:
+            if costo_corrente + float(tour.costo) > max_budget:
+                return False
+
+        if max_giorni == None:
+            valida = True
+        else:
+            if durata_corrente + tour.durata_giorni > max_giorni:
+                return False
+
 
         attrazioni = set()
         for attrazione in self.tour_map[tour.id].attrazioni:
-            attrazioni.add(attrazione)
+            attrazioni.add(attrazione[0])
         if len(attrazioni_usate.intersection(attrazioni))>=1:
             return False
-        return True
+        return valida
 
     def get_tour_regione(self,id_regione):
         lista_tour_regione = []
